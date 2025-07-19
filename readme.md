@@ -143,42 +143,42 @@ Run tests with Maven:
 
 To enhance scalability and fault tolerance, the current monolithic application can be migrated to a microservices-based architecture with the following components:
 
-###API Gateway
+### API Gateway
 Single entry point for clients (e.g., Spring Cloud Gateway, Zuul, or NGINX).
 
 Handles routing, authentication, and rate limiting.
 
-###Service Registry
+### Service Registry
 Use Eureka, Consul, or Zookeeper for service discovery.
 
-###Microservices
+### Microservices
 Split monolithic services (Wishlist, SalesAnalytics, Orders, Products) into independent microservices.
 
 Communicate via REST or gRPC.
 
-###Centralized Configuration
+### Centralized Configuration
 Spring Cloud Config Server backed by Git repo or Consul.
 
 Ensures all services load configs dynamically without redeployment.
 
-###Circuit Breaker & Resilience
+### Circuit Breaker & Resilience
 Implement Resilience4j or Hystrix for fault tolerance.
 
 Add fallback and retry policies.
 
-###Message Broker
+### Message Broker
 Apache Kafka for asynchronous event-driven communication.
 
 Enables scalability and decoupling between services.
 
-###Caching Layer
+### Caching Layer
 Redis for distributed caching and session management.
 
-###Logging & Monitoring
+### Logging & Monitoring
 
 Prometheus + Grafana for metrics and monitoring.
 
-###Container Orchestration
+### Container Orchestration
 Kubernetes (K8s) for auto-scaling, fault tolerance, and high availability.
 
 Deploy microservices as Docker containers.
