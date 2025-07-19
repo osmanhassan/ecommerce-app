@@ -1,0 +1,19 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Maven target directory
+/target/
+
+# Logs
+logs/
+*.log
+
+
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+
+
