@@ -139,7 +139,7 @@ Run tests with Maven:
 ./mvnw test
 ```
 
-##Future Modifications for Scalability, Availability & Fault Tolerance
+## Future Modifications for Scalability, Availability & Fault Tolerance
 
 To enhance scalability and fault tolerance, the current monolithic application can be migrated to a microservices-based architecture with the following components:
 
