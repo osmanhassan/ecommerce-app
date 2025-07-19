@@ -1,0 +1,87 @@
+version: "3.9"
+services:
+  # Spring Boot App (only in prod)
+  app:
+    build: .
+    container_name: ecommerce-app
+    profiles: ["prod"]
+    ports:
+      - "8080:8081"
+    depends_on:
+      - db-prod
+      - logstash
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-prod:3306/ecommerce_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # MySQL for DEV
+  db-dev:
+    image: mysql:8.3
+    container_name: mysql-db-dev
+    profiles: ["dev"]
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce_db
+    ports:
+      - "3307:3306" # Different port for dev
+    volumes:
+      - mysql_dev_data:/var/lib/mysql
+
+  # MySQL for PROD
+  db-prod:
+    image: mysql:8.3
+    container_name: mysql-db-prod
+    profiles: ["prod"]
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce_db
+    ports:
+      - "3306:3306" # Standard port for prod
+    volumes:
+      - mysql_prod_data:/var/lib/mysql
+
+
+  # Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+  # Logstash
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.13.4
+    container_name: logstash
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+
+  # Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+
+volumes:
+  mysql_dev_data:
+  mysql_prod_data:
+  es_data:
